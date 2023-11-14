@@ -1,0 +1,120 @@
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Temperature Converter</title>
+</head>
+<body>
+  <div class="converter-box">
+    <div class="converter">
+      <h2>Temperature Converter</h2>
+      <label for="celsius">Celsius:</label>
+      <input type="number" id="celsius" placeholder="Enter temperature in Celsius" oninput="convert('C')">
+      
+      <label for="fahrenheit">Fahrenheit:</label>
+      <input type="number" id="fahrenheit" placeholder="Enter temperature in Fahrenheit" oninput="convert('F')">
+      
+      <div class="emojis" id="emojis">❄️ 🌞</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+CSS
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(45deg, #3498db, #e74c3c, #1abc9c, #f39c12);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.converter-box {
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.converter {
+  text-align: center;
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.2em;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 1em;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+.emojis {
+  font-size: 2em;
+  margin-top: 20px;
+  color: #3498db; /* Blue color for emojis */
+}
+
+
+JS
+
+function convert(unit) {
+  const celsiusInput = document.getElementById('celsius');
+  const fahrenheitInput = document.getElementById('fahrenheit');
+  const emojisDiv = document.getElementById('emojis');
+
+  const celsiusValue = parseFloat(celsiusInput.value);
+  const fahrenheitValue = parseFloat(fahrenheitInput.value);
+
+  if (unit === 'C' && !isNaN(celsiusValue)) {
+    const convertedFahrenheit = (celsiusValue * 9/5) + 32;
+    fahrenheitInput.value = convertedFahrenheit.toFixed(2);
+  } else if (unit === 'F' && !isNaN(fahrenheitValue)) {
+    const convertedCelsius = (fahrenheitValue - 32) * 5/9;
+    celsiusInput.value = convertedCelsius.toFixed(2);
+  }
+
+  const isHot = celsiusValue > 30 || fahrenheitValue > 86; // Adjust the threshold as needed
+  const emojisDivContent = isHot ? '🌞 Hot' : '❄️ Cold';
+  emojisDiv.textContent = emojisDivContent;
+}
